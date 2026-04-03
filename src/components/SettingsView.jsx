@@ -31,24 +31,40 @@ export default function SettingsView() {
   }, [currentUser]);
 
   useEffect(() => {
-    if (!window.google || !inputRef.current) return;
-    
-    autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
-      fields: ['geometry', 'formatted_address', 'name']
-    });
+    function initAutocomplete() {
+      if (!window.google || !inputRef.current) return;
 
-    autocompleteRef.current.addListener('place_changed', () => {
-      const place = autocompleteRef.current.getPlace();
-      if (!place.geometry) return;
-      
-      const newLoc = {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng(),
-        address: place.formatted_address || place.name
-      };
-      setOfficeLocation(newLoc);
-      setAddress(newLoc.address);
-    });
+      autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
+        fields: ['geometry', 'formatted_address', 'name']
+      });
+
+      autocompleteRef.current.addListener('place_changed', () => {
+        const place = autocompleteRef.current.getPlace();
+        if (!place.geometry) return;
+
+        const newLoc = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
+          address: place.formatted_address || place.name
+        };
+        setOfficeLocation(newLoc);
+        setAddress(newLoc.address);
+      });
+    }
+
+    // If Google Maps is already loaded, initialize immediately
+    if (window.google) {
+      initAutocomplete();
+    } else {
+      // Otherwise poll until the script has finished loading
+      const interval = setInterval(() => {
+        if (window.google) {
+          clearInterval(interval);
+          initAutocomplete();
+        }
+      }, 100);
+      return () => clearInterval(interval);
+    }
   }, []);
 
   async function handleSave() {
