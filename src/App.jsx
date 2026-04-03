@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Calendar as CalendarIcon, Home, Settings as SettingsIcon, LogOut, Eraser } from 'lucide-react';
+import { Settings as SettingsIcon, LogOut, Eraser } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
 import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
@@ -113,7 +113,7 @@ function App() {
     <Router>
       <div className="app-container">
         <header className="app-header">
-          <h1 className="app-title">Hybrid Tracker</h1>
+          <Link to="/" className="app-title" style={{ textDecoration: 'none', color: 'inherit' }}>Hybrid Tracker</Link>
           <div className="avatar-container" ref={menuRef}>
             <div 
               className="user-avatar" 
@@ -129,6 +129,9 @@ function App() {
                 <button className="dropdown-item" onClick={handleClearFuture}>
                   <Eraser size={16} /> Clear Future Days
                 </button>
+                <Link to="/settings" className="dropdown-item" onClick={() => setShowMenu(false)} style={{ textDecoration: 'none' }}>
+                  <SettingsIcon size={16} /> Settings
+                </Link>
                 <button className="dropdown-item danger" onClick={() => { setShowMenu(false); logout(); }}>
                   <LogOut size={16} /> Sign Out
                 </button>
@@ -157,22 +160,7 @@ function App() {
           </Routes>
         </main>
 
-        <nav className="bottom-nav">
-          <ul className="nav-list">
-            <li>
-              <Link to="/" className="nav-item">
-                <Home size={24} />
-                <span>Home</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/settings" className="nav-item">
-                <SettingsIcon size={24} />
-                <span>Settings</span>
-              </Link>
-            </li>
-          </ul>
-        </nav>
+
       </div>
     </Router>
   );

@@ -110,7 +110,6 @@ body {
 
 .app-main {
   flex: 1;
-  padding-bottom: 5rem; /* Space for bottom nav */
 }
 
 .section-panel {
@@ -245,62 +244,6 @@ body {
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-top: 1px solid var(--border-color);
-  padding: 0.75rem 1rem;
-  z-index: 10;
-}
-
-@media (min-width: 640px) {
-  .bottom-nav {
-    position: static;
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-    margin-top: auto;
-  }
-  .app-main {
-    padding-bottom: 1rem;
-  }
-}
-
-.nav-list {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  list-style: none;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0.5rem;
-  color: var(--text-secondary);
-  text-decoration: none;
-  transition: color 0.2s;
-  cursor: pointer;
-  background: none;
-  border: none;
-  font-family: inherit;
-  font-size: 0.75rem;
-}
-
-.nav-item:hover, .nav-item:focus {
-  color: var(--primary);
-}
-
-.nav-item span {
-  margin-top: 0.25rem;
-}
 
 .avatar-container {
   position: relative;
