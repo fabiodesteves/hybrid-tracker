@@ -82,44 +82,43 @@ export default function SettingsView() {
   }
 
   return (
-    <div className="glass-panel section-panel">
-      <h2 className="section-title">Settings</h2>
-      
-      {message && <div style={{marginBottom: '1rem', color: message.includes('Failed') ? 'var(--danger)' : 'var(--success)'}}>{message}</div>}
-
-      <div className="settings-form">
-        <div className="form-group">
-          <label className="form-label">Target Office Percentage (%)</label>
-          <input 
-            type="number" 
-            className="input-field" 
-            value={targetPercentage}
-            onChange={(e) => setTargetPercentage(e.target.value)}
-            min="0"
-            max="100"
-          />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Office Location</label>
-          <input 
-            ref={inputRef}
-            type="text" 
-            className="input-field" 
-            placeholder="Search address..." 
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-          {officeLocation && (
-            <p style={{fontSize: '0.75rem', color: 'var(--text-muted)'}}>
-              Saved Coordinates: {officeLocation.lat.toFixed(4)}, {officeLocation.lng.toFixed(4)}
-            </p>
-          )}
-        </div>
+    <>
+      <div className="glass-panel section-panel">
+        <h2 className="section-title">Settings</h2>
         
-        <button onClick={handleSave} className="btn btn-primary" style={{marginTop: '1rem'}}>
+        {message && <div style={{marginBottom: '1rem', color: message.includes('Failed') ? 'var(--danger)' : 'var(--success)'}}>{message}</div>}
+
+        <div className="settings-form">
+          <div className="form-group">
+            <label className="form-label">Target Office Percentage (%)</label>
+            <input 
+              type="number" 
+              className="input-field" 
+              value={targetPercentage}
+              onChange={(e) => setTargetPercentage(e.target.value)}
+              min="0"
+              max="100"
+            />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Office Location</label>
+            <input 
+              ref={inputRef}
+              type="text" 
+              className="input-field" 
+              placeholder="Search address..." 
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+        <button onClick={handleSave} className="btn btn-primary">
           Save Settings
         </button>
       </div>
-    </div>
+    </>
   );
 }
