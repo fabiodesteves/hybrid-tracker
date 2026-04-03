@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { LogOut } from 'lucide-react';
 import { db } from '../services/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export default function SettingsView() {
-  const { logout, currentUser } = useAuth();
+  const { currentUser } = useAuth();
   const [targetPercentage, setTargetPercentage] = useState(50);
   const [officeLocation, setOfficeLocation] = useState(null);
   const [address, setAddress] = useState('');
@@ -119,12 +118,6 @@ export default function SettingsView() {
         
         <button onClick={handleSave} className="btn btn-primary" style={{marginTop: '1rem'}}>
           Save Settings
-        </button>
-
-        <hr style={{margin: '1.5rem 0', borderColor: 'var(--border-color-solid)', borderStyle: 'solid', borderWidth: '1px 0 0 0'}} />
-
-        <button onClick={logout} className="btn btn-outline" style={{display: 'flex', gap: '0.5rem', justifyContent: 'center'}}>
-          <LogOut size={16} /> Sign Out
         </button>
       </div>
     </div>

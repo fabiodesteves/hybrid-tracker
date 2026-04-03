@@ -1,18 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Calendar as CalendarIcon, Home, Settings as SettingsIcon } from 'lucide-react';
+import { Calendar as CalendarIcon, Home, Settings as SettingsIcon, LogOut, Eraser } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
 import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
 import CalendarView from './components/CalendarView';
 import SettingsView from './components/SettingsView';
 import { db } from './services/firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, query, where, getDocs, writeBatch } from 'firebase/firestore';
 import { format } from 'date-fns';
 
 function App() {
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
   const [geoPrompt, setGeoPrompt] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -60,6 +72,35 @@ function App() {
     }
   }
 
+  async function handleClearFuture() {
+    setShowMenu(false);
+    if (!window.confirm("Are you sure you want to clear all future logging data?")) return;
+
+    try {
+      const todayStr = format(new Date(), 'yyyy-MM-dd');
+      const logsRef = collection(db, `users/${currentUser.uid}/logs`);
+      const q = query(logsRef, where('__name__', '>', todayStr));
+      const snapshot = await getDocs(q);
+      
+      if (snapshot.empty) {
+        alert("No future logging data to clear.");
+        return;
+      }
+
+      // Firestore batches can hold up to 500 writes
+      const batch = writeBatch(db);
+      snapshot.forEach(docSnap => {
+        batch.delete(docSnap.ref);
+      });
+      await batch.commit();
+      
+      alert("Future data successfully cleared!");
+    } catch (e) {
+      console.error("Error clearing data", e);
+      alert("Failed to clear data.");
+    }
+  }
+
   if (!currentUser) {
     return <Auth />;
   }
@@ -73,7 +114,27 @@ function App() {
       <div className="app-container">
         <header className="app-header">
           <h1 className="app-title">Hybrid Tracker</h1>
-          <div className="user-avatar" title={currentUser.email}>{initial}</div>
+          <div className="avatar-container" ref={menuRef}>
+            <div 
+              className="user-avatar" 
+              title={currentUser.email}
+              onClick={() => setShowMenu(!showMenu)}
+              style={{ cursor: 'pointer' }}
+            >
+              {initial}
+            </div>
+            
+            {showMenu && (
+              <div className="dropdown-menu">
+                <button className="dropdown-item" onClick={handleClearFuture}>
+                  <Eraser size={16} /> Clear Future Days
+                </button>
+                <button className="dropdown-item danger" onClick={() => { setShowMenu(false); logout(); }}>
+                  <LogOut size={16} /> Sign Out
+                </button>
+              </div>
+            )}
+          </div>
         </header>
 
         {geoPrompt && (
