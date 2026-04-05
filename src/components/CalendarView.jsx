@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, 
-  eachDayOfInterval, isSameMonth, isToday, addMonths, subMonths 
+  format, startOfMonth, endOfMonth, startOfWeek, endOfWeek,
+  eachDayOfInterval, isSameMonth, isToday, addMonths, subMonths,
+  isSameMonth as isSameMonthFn
 } from 'date-fns';
 import { ChevronLeft, ChevronRight, Briefcase, Home as HomeIcon, MapPin } from 'lucide-react';
 import { fetchPortugalHolidays } from '../services/holidays';
@@ -11,7 +12,9 @@ import { useAuth } from '../contexts/AuthContext';
 
 export default function CalendarView() {
   const { currentUser } = useAuth();
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const today = new Date();
+  const [currentMonth, setCurrentMonth] = useState(today);
+  const isCurrentMonth = isSameMonthFn(currentMonth, today);
   const [publicHolidays, setPublicHolidays] = useState([]);
   const [logs, setLogs] = useState({}); // { 'YYYY-MM-DD': { type: 'office' | 'home' | 'holiday' } }
 
@@ -82,7 +85,26 @@ export default function CalendarView() {
     <div className="glass-panel section-panel p-4" style={{padding: '1.5rem'}}>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem'}}>
         <h2 className="section-title" style={{margin: 0}}>Calendar</h2>
-        <div style={{display: 'flex', gap: '1rem', alignItems: 'center'}}>
+        <div style={{display: 'flex', gap: '0.75rem', alignItems: 'center'}}>
+          <button
+            onClick={() => setCurrentMonth(today)}
+            style={{
+              padding: '0.2rem 0.75rem',
+              borderRadius: '999px',
+              border: '1px solid var(--primary)',
+              background: 'transparent',
+              color: 'var(--primary)',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'opacity 0.2s ease, transform 0.2s ease',
+              opacity: isCurrentMonth ? 0 : 1,
+              pointerEvents: isCurrentMonth ? 'none' : 'auto',
+              transform: isCurrentMonth ? 'scale(0.85)' : 'scale(1)',
+            }}
+          >
+            Today
+          </button>
           <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="borderless-btn">
             <ChevronLeft size={20} />
           </button>
