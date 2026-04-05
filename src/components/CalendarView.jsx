@@ -141,7 +141,7 @@ export default function CalendarView() {
                   minWidth: 0,
                   minHeight: 0,
                   backgroundColor: bgClass,
-                  border: '1px solid var(--border-color-solid)',
+                  border: isToday(day) ? '2px solid var(--primary)' : '1px solid var(--border-color-solid)',
                   borderRadius: '0.5rem',
                   cursor: 'pointer',
                   opacity: isSameMonth(day, monthStart) ? 1 : 0.3,
@@ -151,8 +151,8 @@ export default function CalendarView() {
                 }}
               >
                 <span style={{
-                  position: 'absolute', top: '4px', left: '4px', fontSize: '0.65rem', 
-                  color: isToday(day) ? 'var(--primary)' : 'var(--text-secondary)',
+                  position: 'absolute', top: '4px', left: '4px', fontSize: '0.65rem',
+                  color: 'var(--text-secondary)',
                   fontWeight: isToday(day) ? 'bold' : 'normal',
                   lineHeight: 1
                 }}>
