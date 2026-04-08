@@ -147,7 +147,8 @@ export default function CalendarView() {
                   opacity: isSameMonth(day, monthStart) ? 1 : 0.3,
                   position: 'relative',
                   overflow: 'hidden',
-                  userSelect: 'none'
+                  userSelect: 'none',
+                  boxShadow: isWeekend ? 'inset 0 0 0 1000px rgba(128, 128, 128, 0.08)' : 'none'
                 }}
               >
                 <span style={{
