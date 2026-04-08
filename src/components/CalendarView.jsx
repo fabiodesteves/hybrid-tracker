@@ -148,7 +148,7 @@ export default function CalendarView() {
                   position: 'relative',
                   overflow: 'hidden',
                   userSelect: 'none',
-                  boxShadow: isWeekend ? 'inset 0 0 0 1000px rgba(128, 128, 128, 0.08)' : 'none'
+                  boxShadow: isWeekend ? 'inset 0 0 0 1000px rgba(128, 128, 128, 0.12)' : 'none'
                 }}
               >
                 <span style={{
