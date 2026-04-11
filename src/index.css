@@ -20,6 +20,17 @@
   --border-color: rgba(255, 255, 255, 0.5);
   --border-color-solid: #e5e7eb;
   --glass-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.05);
+
+  /* Responsive icon sizes */
+  --icon-size-calendar: 16px;
+  --icon-size-legend: 14px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --icon-size-calendar: 20px;
+    --icon-size-legend: 16px;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

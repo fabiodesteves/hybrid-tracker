@@ -74,10 +74,10 @@ export default function CalendarView() {
   }
 
   function getDayContent(dateStr, isWeekend) {
-    if (logs[dateStr]?.type === 'office') return <Building size={16} color="rgba(59, 130, 246, 0.85)" />;
-    if (logs[dateStr]?.type === 'home') return <HomeIcon size={16} color="rgba(16, 185, 129, 0.85)" />;
-    if (logs[dateStr]?.type === 'holiday') return <Sun size={16} color="rgba(245, 158, 11, 0.85)" />;
-    if (publicHolidays.includes(dateStr)) return <MapPin size={16} color="rgba(245, 158, 11, 0.85)" />;
+    if (logs[dateStr]?.type === 'office') return <Building size={16} style={{width: 'var(--icon-size-calendar)', height: 'var(--icon-size-calendar)'}} color="rgba(59, 130, 246, 0.85)" />;
+    if (logs[dateStr]?.type === 'home') return <HomeIcon size={16} style={{width: 'var(--icon-size-calendar)', height: 'var(--icon-size-calendar)'}} color="rgba(16, 185, 129, 0.85)" />;
+    if (logs[dateStr]?.type === 'holiday') return <Sun size={16} style={{width: 'var(--icon-size-calendar)', height: 'var(--icon-size-calendar)'}} color="rgba(245, 158, 11, 0.85)" />;
+    if (publicHolidays.includes(dateStr)) return <MapPin size={16} style={{width: 'var(--icon-size-calendar)', height: 'var(--icon-size-calendar)'}} color="rgba(245, 158, 11, 0.85)" />;
     return null;
   }
 
@@ -178,9 +178,9 @@ export default function CalendarView() {
       </div>
 
       <div style={{display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '1.5rem', fontSize: '0.75rem', color: 'var(--text-secondary)'}}>
-        <div style={{display: 'flex', alignItems: 'center', gap: '0.25rem'}}><Building size={14} /> Office</div>
-        <div style={{display: 'flex', alignItems: 'center', gap: '0.25rem'}}><HomeIcon size={14} /> Home</div>
-        <div style={{display: 'flex', alignItems: 'center', gap: '0.25rem'}}><Sun size={14} /> Holiday</div>
+        <div style={{display: 'flex', alignItems: 'center', gap: '0.25rem'}}><Building style={{width: 'var(--icon-size-legend)', height: 'var(--icon-size-legend)'}} /> Office</div>
+        <div style={{display: 'flex', alignItems: 'center', gap: '0.25rem'}}><HomeIcon style={{width: 'var(--icon-size-legend)', height: 'var(--icon-size-legend)'}} /> Home</div>
+        <div style={{display: 'flex', alignItems: 'center', gap: '0.25rem'}}><Sun style={{width: 'var(--icon-size-legend)', height: 'var(--icon-size-legend)'}} /> Holiday</div>
       </div>
     </div>
   );

@@ -108,12 +108,9 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div style={{backgroundColor: 'var(--bg-card-solid)', padding: '1rem', borderRadius: '0.5rem', border: '1px solid var(--border-color-solid)', minHeight: '90px', display: 'flex', alignItems: 'center'}}>
+      <div style={{backgroundColor: 'var(--bg-card-solid)', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border-color-solid)', minHeight: '60px', display: 'flex', alignItems: 'center'}}>
         <p style={{fontSize: '0.875rem', color: 'var(--text-secondary)', margin: 0, width: '100%'}}>
-          <strong>Insight:</strong> {suggestion}<br/>
-          <span style={{fontSize: '0.75rem', marginTop: '0.5rem', display: 'block'}}>
-            Total working days logged: {stats.total} (Holidays/PTO are excluded)
-          </span>
+          Total working days logged: {stats.total} (Holidays/PTO are excluded)
         </p>
       </div>
     </div>
