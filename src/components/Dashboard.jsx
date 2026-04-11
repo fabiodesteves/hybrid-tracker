@@ -2,25 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../services/firebase';
 import { collection, onSnapshot, doc } from 'firebase/firestore';
-import { isSameQuarter, parseISO } from 'date-fns';
+import { isSameQuarter, isSameMonth, parseISO } from 'date-fns';
 
 export default function Dashboard() {
   const { currentUser } = useAuth();
   const [targetPercentage, setTargetPercentage] = useState(50);
+  const [countBy, setCountBy] = useState('quarter');
   const [stats, setStats] = useState({ office: 0, home: 0, total: 0 });
 
   // Load Settings
   useEffect(() => {
     if (!currentUser) return;
     const unsubscribe = onSnapshot(doc(db, 'users', currentUser.uid), (docSnap) => {
-      if (docSnap.exists() && docSnap.data().targetPercentage) {
-        setTargetPercentage(docSnap.data().targetPercentage);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.targetPercentage) setTargetPercentage(data.targetPercentage);
+        if (data.countBy) setCountBy(data.countBy);
       }
     });
     return () => unsubscribe();
   }, [currentUser]);
 
-  // Calculate Quarter Stats based on input days
+  // Calculate Stats based on input days
   useEffect(() => {
     if (!currentUser) return;
     
@@ -34,9 +37,12 @@ export default function Dashboard() {
         const dateStr = docSnap.id;
         const dateObj = parseISO(dateStr);
         
-        // As requested: Calculations based on days WITH INPUT (past or future),
-        // but typically users want to see the current quarter's stats.
-        if (isSameQuarter(dateObj, today)) {
+        // Filter based on countBy setting (quarter or month)
+        const isInPeriod = countBy === 'month'
+          ? isSameMonth(dateObj, today)
+          : isSameQuarter(dateObj, today);
+        
+        if (isInPeriod) {
           if (data.type === 'office') officeTemp++;
           if (data.type === 'home') homeTemp++;
           // 'holiday' is ignored as it doesn't count towards working pool
@@ -51,13 +57,12 @@ export default function Dashboard() {
     });
 
     return () => unsubscribe();
-  }, [currentUser]);
+  }, [currentUser, countBy]);
 
   const currentPercent = stats.total > 0 ? (stats.office / stats.total) * 100 : 0;
   
   // Calculate how many more office days needed or allowed
   const targetRatio = targetPercentage / 100;
-  const currentRatio = stats.total > 0 ? stats.office / stats.total : 0;
   
   let suggestion = "";
   if (stats.total === 0) {
@@ -76,9 +81,15 @@ export default function Dashboard() {
     }
   }
 
+  // Generate period title
+  const today = new Date();
+  const periodTitle = countBy === 'month'
+    ? today.toLocaleString('default', { month: 'long', year: 'numeric' })
+    : `Q${Math.ceil((today.getMonth() + 1) / 3)} Dashboard`;
+
   return (
     <div className="glass-panel section-panel">
-      <h2 className="section-title">Q{Math.ceil((new Date().getMonth() + 1) / 3)} Dashboard</h2>
+      <h2 className="section-title">{periodTitle}</h2>
       
       <div className="stats-grid" style={{marginBottom: '1.5rem'}}>
         <div className="stat-card">

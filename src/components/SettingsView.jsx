@@ -8,6 +8,7 @@ export default function SettingsView() {
   const [targetPercentage, setTargetPercentage] = useState(50);
   const [officeLocation, setOfficeLocation] = useState(null);
   const [address, setAddress] = useState('');
+  const [countBy, setCountBy] = useState('quarter');
   const [message, setMessage] = useState('');
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
@@ -24,6 +25,7 @@ export default function SettingsView() {
           setOfficeLocation(data.officeLocation);
           setAddress(data.officeLocation.address || '');
         }
+        if (data.countBy) setCountBy(data.countBy);
       }
     }
     loadSettings();
@@ -71,7 +73,8 @@ export default function SettingsView() {
       setMessage('Saving...');
       await setDoc(doc(db, 'users', currentUser.uid), {
         targetPercentage: Number(targetPercentage),
-        officeLocation
+        officeLocation,
+        countBy
       }, { merge: true });
       setMessage('Settings saved successfully!');
       setTimeout(() => setMessage(''), 3000);
@@ -102,14 +105,25 @@ export default function SettingsView() {
           </div>
           <div className="form-group">
             <label className="form-label">Office Location</label>
-            <input 
+            <input
               ref={inputRef}
-              type="text" 
-              className="input-field" 
-              placeholder="Search address..." 
+              type="text"
+              className="input-field"
+              placeholder="Search address..."
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Count Office Days By</label>
+            <select
+              className="input-field"
+              value={countBy}
+              onChange={(e) => setCountBy(e.target.value)}
+            >
+              <option value="quarter">Quarter</option>
+              <option value="month">Month</option>
+            </select>
           </div>
         </div>
       </div>
