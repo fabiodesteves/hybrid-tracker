@@ -4,7 +4,7 @@ import {
   eachDayOfInterval, isSameMonth, isToday, addMonths, subMonths,
   isSameMonth as isSameMonthFn
 } from 'date-fns';
-import { ChevronLeft, ChevronRight, Briefcase, Home as HomeIcon, MapPin } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Briefcase, Home as HomeIcon, MapPin, Sun } from 'lucide-react';
 import { fetchPortugalHolidays } from '../services/holidays';
 import { db } from '../services/firebase';
 import { doc, getDoc, setDoc, onSnapshot, collection } from 'firebase/firestore';
@@ -74,10 +74,10 @@ export default function CalendarView() {
   }
 
   function getDayContent(dateStr, isWeekend) {
-    if (logs[dateStr]?.type === 'office') return <span style={{fontSize: '1rem'}}>🏢</span>;
-    if (logs[dateStr]?.type === 'home') return <span style={{fontSize: '1rem'}}>🏠</span>;
-    if (logs[dateStr]?.type === 'holiday') return <span style={{fontSize: '1rem'}}>🌴</span>;
-    if (publicHolidays.includes(dateStr)) return <span style={{fontSize: '1rem'}}>🇵🇹</span>;
+    if (logs[dateStr]?.type === 'office') return <Briefcase size={16} />;
+    if (logs[dateStr]?.type === 'home') return <HomeIcon size={16} />;
+    if (logs[dateStr]?.type === 'holiday') return <Sun size={16} />;
+    if (publicHolidays.includes(dateStr)) return <MapPin size={16} />;
     return null;
   }
 
@@ -178,9 +178,9 @@ export default function CalendarView() {
       </div>
 
       <div style={{display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '1.5rem', fontSize: '0.75rem', color: 'var(--text-secondary)'}}>
-        <div style={{display: 'flex', alignItems: 'center', gap: '0.25rem'}}><span style={{fontSize: '0.875rem'}}>🏢</span> Office</div>
-        <div style={{display: 'flex', alignItems: 'center', gap: '0.25rem'}}><span style={{fontSize: '0.875rem'}}>🏠</span> Home</div>
-        <div style={{display: 'flex', alignItems: 'center', gap: '0.25rem'}}><span style={{fontSize: '0.875rem'}}>🌴</span> Holiday</div>
+        <div style={{display: 'flex', alignItems: 'center', gap: '0.25rem'}}><Briefcase size={14} /> Office</div>
+        <div style={{display: 'flex', alignItems: 'center', gap: '0.25rem'}}><HomeIcon size={14} /> Home</div>
+        <div style={{display: 'flex', alignItems: 'center', gap: '0.25rem'}}><Sun size={14} /> Holiday</div>
       </div>
     </div>
   );

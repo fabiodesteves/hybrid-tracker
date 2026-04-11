@@ -113,7 +113,10 @@ function App() {
     <Router>
       <div className="app-container">
         <header className="app-header">
-          <Link to="/" className="app-title" style={{ textDecoration: 'none', color: 'inherit' }}>Hybrid Tracker</Link>
+          <Link to="/" className="app-title" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <img src="/hybrid-tracker-icon.png" alt="Hybrid Tracker" style={{ height: '36px', width: 'auto', borderRadius: '10px' }} />
+            Hybrid Tracker
+          </Link>
           <div className="avatar-container" ref={menuRef}>
             <div 
               className="user-avatar" 
