@@ -76,4 +76,4 @@ We prioritize your privacy. By using **Google Identity Federation** via Firebase
 This project is private and intended for personal use.
 
 ---
-*Created with ❤️ by Fabiodesteves*
+*Created with ❤️ by Fábio Esteves*
