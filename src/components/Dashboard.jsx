@@ -3,6 +3,19 @@ import { useAuth } from '../contexts/AuthContext';
 import { db } from '../services/firebase';
 import { collection, onSnapshot, doc } from 'firebase/firestore';
 import { isSameQuarter, isSameMonth, parseISO } from 'date-fns';
+import { Info } from 'lucide-react';
+
+function StatLabel({ children, tooltip }) {
+  return (
+    <div className="stat-label-row">
+      <p className="stat-label">{children}</p>
+      <button className="stat-info-btn" type="button" aria-label={`${children} info`}>
+        <Info size={14} strokeWidth={2.25} aria-hidden="true" />
+        <span className="stat-tooltip" role="tooltip">{tooltip}</span>
+      </button>
+    </div>
+  );
+}
 
 export default function Dashboard() {
   const { currentUser } = useAuth();
@@ -74,15 +87,15 @@ export default function Dashboard() {
       
       <div className="stats-grid" style={{marginBottom: '1.5rem'}}>
         <div className="stat-card">
-          <p className="stat-label">Office</p>
+          <StatLabel tooltip="Office days logged in this period.">Office</StatLabel>
           <p className="stat-value primary-text">{stats.office}</p>
         </div>
         <div className="stat-card">
-          <p className="stat-label">Target</p>
+          <StatLabel tooltip="Office-day percentage target to meet.">Target</StatLabel>
           <p className="stat-value">{targetPercent}%</p>
         </div>
         <div className="stat-card">
-          <p className="stat-label">Current</p>
+          <StatLabel tooltip="Current percentage of logged work days spent in office.">Current</StatLabel>
           <p className={"stat-value " + (currentPercent >= targetPercent ? 'success-text' : 'warning-text')}>
             {Math.round(currentPercent)}%
           </p>
