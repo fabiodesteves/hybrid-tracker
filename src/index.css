@@ -161,6 +161,7 @@ body {
 
 .primary-text { color: var(--primary); }
 .success-text { color: var(--success); }
+.warning-text { color: var(--danger); }
 
 .settings-form {
   display: flex;

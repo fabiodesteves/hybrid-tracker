@@ -16,7 +16,7 @@ export default function Dashboard() {
     const unsubscribe = onSnapshot(doc(db, 'users', currentUser.uid), (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
-        if (data.targetPercentage) setTargetPercentage(data.targetPercentage);
+        if (data.targetPercentage !== undefined) setTargetPercentage(data.targetPercentage);
         if (data.countBy) setCountBy(data.countBy);
       }
     });
@@ -59,27 +59,8 @@ export default function Dashboard() {
     return () => unsubscribe();
   }, [currentUser, countBy]);
 
+  const targetPercent = Number(targetPercentage);
   const currentPercent = stats.total > 0 ? (stats.office / stats.total) * 100 : 0;
-  
-  // Calculate how many more office days needed or allowed
-  const targetRatio = targetPercentage / 100;
-  
-  let suggestion = "";
-  if (stats.total === 0) {
-    suggestion = "Start logging days in the calendar!";
-  } else if (currentPercent >= targetPercentage) {
-    suggestion = `Great job! You are ${Math.round(currentPercent - targetPercentage)}% above your target.`;
-  } else {
-    // Math to find how many contiguous office days needed to hit target
-    // (office + X) / (total + X) = targetRatio
-    // office + X = targetRatio * total + targetRatio * X
-    // X * (1 - targetRatio) = targetRatio * total - office
-    // X = (targetRatio * total - office) / (1 - targetRatio)
-    if (targetRatio < 1) {
-      const daysNeeded = Math.ceil((targetRatio * stats.total - stats.office) / (1 - targetRatio));
-      suggestion = `You need ${daysNeeded} more consecutive office days to reach ${targetPercentage}%.`;
-    }
-  }
 
   // Generate period title
   const today = new Date();
@@ -98,11 +79,11 @@ export default function Dashboard() {
         </div>
         <div className="stat-card">
           <p className="stat-label">Target</p>
-          <p className="stat-value">{targetPercentage}%</p>
+          <p className="stat-value">{targetPercent}%</p>
         </div>
         <div className="stat-card">
           <p className="stat-label">Current</p>
-          <p className={"stat-value " + (currentPercent >= targetPercentage ? 'success-text' : 'warning-text')}>
+          <p className={"stat-value " + (currentPercent >= targetPercent ? 'success-text' : 'warning-text')}>
             {Math.round(currentPercent)}%
           </p>
         </div>
